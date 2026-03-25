@@ -8,82 +8,157 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f0f3f5;
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
+            width: 100%;
             max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: rgb(255, 255, 255);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
         h1 {
             color: #2c3e50;
             text-align: center;
             border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-transform: uppercase;
         }
-        .info-panel {
-            background: #eef2f3;
+        .instruction-panel {
+            background-color: #f7f9fc;
             padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 0.95em;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 25px;
+            min-width: 600px; /* Asegura scroll en móviles */
         }
         th {
             background-color: #3498db;
             color: white;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
+            text-transform: uppercase;
+            font-weight: 700;
         }
         td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
         }
-        tr:hover { background-color: #f1f1f1; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fbfd; }
+        
         input[type="number"] {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
         }
-        .bonus-cell {
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .result-val {
             font-weight: bold;
+            color: #2c3e50;
+        }
+        .perc-val {
+            font-weight: bold;
+            color: #e67e22; /* Color para porcentaje */
+        }
+        .bonus-val {
+            font-weight: bold;
+            color: #27ae60; /* Color para bono */
+        }
+        
+        .global-results {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #bdc3c7;
+        }
+        .global-results h2 {
+            margin-top: 0;
+            color: #34495e;
+            text-align: center;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        .global-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .global-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .global-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .global-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .global-item.bonus-item .global-value {
             color: #27ae60;
         }
-        .perc-cell {
-            font-style: italic;
-            color: #7f8c8d;
+        .global-item.perc-item .global-value {
+            color: #e67e22;
         }
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.85em;
-            color: #7f8c8d;
-        }
+
         .btn-calc {
             display: block;
             width: 100%;
-            padding: 12px;
-            background: #2ecc71;
+            padding: 15px;
+            background-color: #2ecc71;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 1.1em;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 20px;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
         }
-        .btn-calc:hover { background: #27ae60; }
+        .btn-calc:hover {
+            background-color: #27ae60;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
@@ -91,32 +166,45 @@
 <div class="container">
     <h1>CONCURSO COFARMA</h1>
     
-    <div class="info-panel">
-        <strong>Instrucciones:</strong> Ingrese el valor de la <b>Venta Real</b> en la columna correspondiente para ver el cumplimiento y el bono alcanzado. El cálculo del supervisor se basa en el cumplimiento total del equipo.
+    <div class="instruction-panel">
+        <p><strong>Instrucciones:</strong> Ingresa el valor de la <b>Venta Real</b> para cada vendedor. El sistema calculará el porcentaje de cumplimiento y el bono de cada uno de ellos. Al final, se mostrarán los resultados globales y el bono correspondiente para el supervisor.</p>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>Vendedor</th>
-                <th>Presupuesto</th>
-                <th>Venta Real</th>
-                <th>% Cumpl.</th>
-                <th>Bono</th>
+                <th style="width: 25%;">Vendedor</th>
+                <th style="width: 20%;">Presupuesto</th>
+                <th style="width: 25%;">Venta Real</th>
+                <th style="width: 15%;">% Cumpl.</th>
+                <th style="width: 15%;">Bono</th>
             </tr>
         </thead>
         <tbody id="vendedores-body">
             </tbody>
-        <tfoot>
-            <tr style="background: #ecf0f1; font-weight: bold;">
-                <td>TOTAL EQUIPO (SUPERVISOR)</td>
-                <td id="total-presupuesto">0</td>
-                <td id="total-venta">0</td>
-                <td id="total-porcentaje">0%</td>
-                <td id="bono-supervisor" class="bonus-cell">$ 0</td>
-            </tr>
-        </tfoot>
     </table>
+
+    <div class="global-results">
+        <h2>RESULTADOS GLOBALES (SUPERVISOR)</h2>
+        <div class="global-grid">
+            <div class="global-item">
+                <div class="global-label">Presupuesto Total</div>
+                <div id="super-ppto" class="global-value">$ 0</div>
+            </div>
+            <div class="global-item">
+                <div class="global-label">Venta Global</div>
+                <div id="super-venta" class="global-value">$ 0</div>
+            </div>
+            <div class="global-item perc-item">
+                <div class="global-label">% Cumplimiento</div>
+                <div id="super-perc" class="global-value">0%</div>
+            </div>
+            <div class="global-item bonus-item">
+                <div class="global-label">Bono Ganado</div>
+                <div id="super-bono" class="global-value">$ 0</div>
+            </div>
+        </div>
+    </div>
 
     <button class="btn-calc" onclick="calcularTodo()">Calcular Resultados</button>
 
@@ -126,17 +214,18 @@
 </div>
 
 <script>
-    const vendedores = [
+    const vendedoresData = [
         { nombre: "DANNY", ppto: 6000000 },
         { nombre: "ALEXANDER", ppto: 21000000 },
-        { nombre: "RUBEN MORALES", ppto: 800000 },
+        { nombre: "RUBEN MORALES", ppto: 8000000 },
         { nombre: "LORENZO", ppto: 6000000 },
         { nombre: "ARGENIS", ppto: 3000000 },
         { nombre: "ROY", ppto: 6500000 },
         { nombre: "JUAN ZABALA", ppto: 800000 },
         { nombre: "RUBEN AVENDAÑO", ppto: 800000 },
         { nombre: "JUAN QUINTANA", ppto: 6500000 },
-        { nombre: "ROBERT ATENCIA", ppto: 800000 }
+        { nombre: "ROBERT ATENCIA", ppto: 800000 },
+        { nombre: "HAROLD MARIN", ppto: 52200000 }
     ];
 
     const escalaVendedores = [
@@ -149,36 +238,45 @@
         { min: 15000000, max: Infinity, bono: 300000 }
     ];
 
+    // Escala del Supervisor de tu imagen
+    const escalaSupervisor = [
+        { porcMin: 90, porcMax: 99.99, bono: 80000 },
+        { porcMin: 100, porcMax: 104.99, bono: 100000 },
+        { porcMin: 105, porcMax: Infinity, bono: 130000 }
+    ];
+
+    function fMone(num) {
+        return '$ ' + num.toLocaleString();
+    }
+
     function cargarTabla() {
         const body = document.getElementById('vendedores-body');
         let totalPpto = 0;
         
-        vendedores.forEach((v, index) => {
+        vendedoresData.forEach((v, index) => {
             totalPpto += v.ppto;
             const row = `
                 <tr>
                     <td>${v.nombre}</td>
-                    <td>$ ${v.ppto.toLocaleString()}</td>
-                    <td><input type="number" class="venta-input" data-index="${index}" placeholder="Ej: 5000000"></td>
-                    <td id="perc-${index}" class="perc-cell">0%</td>
-                    <td id="bono-${index}" class="bonus-cell">$ 0</td>
+                    <td class="result-val">${fMone(v.ppto)}</td>
+                    <td><input type="number" class="venta-input" data-index="${index}" placeholder="Ingresa Venta"></td>
+                    <td id="perc-${index}" class="perc-val">0%</td>
+                    <td id="bono-${index}" class="bonus-val">$ 0</td>
                 </tr>
             `;
             body.innerHTML += row;
         });
-        document.getElementById('total-presupuesto').innerText = `$ ${totalPpto.toLocaleString()}`;
+        document.getElementById('super-ppto').innerText = fMone(totalPpto);
     }
 
-    function calcularBonoVendedor(venta) {
+    function calcBonoVendedor(venta) {
         const rango = escalaVendedores.find(r => venta >= r.min && venta <= r.max);
         return rango ? rango.bono : 0;
     }
 
-    function calcularBonoSupervisor(porcentaje) {
-        if (porcentaje >= 105) return 130000;
-        if (porcentaje >= 100) return 100000;
-        if (porcentaje >= 90) return 80000;
-        return 0;
+    function calcBonoSupervisor(porcentaje) {
+        const rango = escalaSupervisor.find(r => porcentaje >= r.porcMin && porcentaje <= r.porcMax);
+        return rango ? rango.bono : 0;
     }
 
     function calcularTodo() {
@@ -186,28 +284,40 @@
         let sumaVentas = 0;
         let sumaPptos = 0;
 
+        // Limpiar errores previos si los hubiera (opcional, para inputs)
+        inputs.forEach(i => i.style.borderColor = "#ddd");
+
         inputs.forEach((input, i) => {
             const venta = parseFloat(input.value) || 0;
-            const ppto = vendedores[i].ppto;
+            const ppto = vendedoresData[i].ppto;
             sumaVentas += venta;
             sumaPptos += ppto;
 
-            // Porcentaje Individual
-            const porc = (venta / ppto) * 100;
-            document.getElementById(`perc-${i}`).innerText = `${porc.toFixed(1)}%`;
+            if (ppto > 0) {
+                const porc = (venta / ppto) * 100;
+                document.getElementById(`perc-${i}`).innerText = `${porc.toFixed(1)}%`;
+            } else {
+                document.getElementById(`perc-${i}`).innerText = "N/A";
+            }
 
-            // Bono Individual
-            const bono = calcularBonoVendedor(venta);
-            document.getElementById(`bono-${i}`).innerText = `$ ${bono.toLocaleString()}`;
+            const bono = calcBonoVendedor(venta);
+            document.getElementById(`bono-${i}`).innerText = fMone(bono);
         });
 
-        // Totales Supervisor
-        const porcTotal = (sumaVentas / sumaPptos) * 100;
-        document.getElementById('total-venta').innerText = `$ ${sumaVentas.toLocaleString()}`;
-        document.getElementById('total-porcentaje').innerText = `${porcTotal.toFixed(1)}%`;
-        
-        const bonoSuper = calcularBonoSupervisor(porcTotal);
-        document.getElementById('bono-supervisor').innerText = `$ ${bonoSuper.toLocaleString()}`;
+        // Totales Supervisor y Panel Global
+        if (sumaPptos > 0) {
+            const porcTotal = (sumaVentas / sumaPptos) * 100;
+            document.getElementById('super-venta').innerText = fMone(sumaVentas);
+            document.getElementById('super-perc').innerText = `${porcTotal.toFixed(1)}%`;
+            
+            const bonoSuper = calcBonoSupervisor(porcTotal);
+            document.getElementById('super-bono').innerText = fMone(bonoSuper);
+        } else {
+            // Caso borde: sin presupuestos definidos
+            document.getElementById('super-venta').innerText = fMone(sumaVentas);
+            document.getElementById('super-perc').innerText = "0%";
+            document.getElementById('super-bono').innerText = fMone(0);
+        }
     }
 
     window.onload = cargarTabla;
