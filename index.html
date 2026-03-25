@@ -10,31 +10,17 @@
         body { font-family: 'Roboto', sans-serif; background-color: #f0f3f5; margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .container { width: 100%; max-width: 1100px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; text-align: center; border-bottom: 3px solid #3498db; padding-bottom: 15px; text-transform: uppercase; }
-        
-        .alert-panel { background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-weight: bold; border: 1px solid #ffeeba; font-size: 0.9em; }
-
+        .alert-panel { background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold; border: 1px solid #ffeeba; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-        th { background-color: #3498db; color: white; padding: 15px; text-align: left; font-size: 0.9em; }
-        td { padding: 12px 10px; border-bottom: 1px solid #e0e0e0; font-size: 0.95em; }
-        tr:hover { background-color: #f8fbfd; }
-        
-        input[type="number"] { width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .result-val { font-weight: bold; color: #2c3e50; }
+        th { background-color: #3498db; color: white; padding: 15px; text-align: left; }
+        td { padding: 12px 10px; border-bottom: 1px solid #e0e0e0; }
+        input[type="number"] { width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 6px; box-sizing: border-box; font-weight: bold; }
         .perc-val { font-weight: bold; color: #e67e22; }
-        .bonus-val { font-weight: bold; color: #27ae60; }
-        
-        .btn-whatsapp { background-color: #25d366; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; font-size: 0.8em; font-weight: bold; transition: 0.3s; }
-        .btn-whatsapp:hover { background-color: #128c7e; transform: scale(1.05); }
-        .btn-whatsapp i { margin-right: 5px; font-size: 1.2em; }
-
+        .bonus-val { font-weight: bold; }
+        .btn-whatsapp { background-color: #25d366; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; font-size: 0.8em; font-weight: bold; }
         .global-results { background-color: #2c3e50; color: white; padding: 20px; border-radius: 10px; margin-bottom: 25px; }
         .global-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .global-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center; }
-        .global-label { font-size: 0.8em; color: #bdc3c7; margin-bottom: 5px; text-transform: uppercase; }
-        .global-value { font-size: 1.2em; font-weight: 700; }
-
-        .btn-calc { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
-        
         footer { margin-top: 30px; text-align: center; color: #95a5a6; font-size: 0.8em; }
     </style>
 </head>
@@ -42,9 +28,8 @@
 
 <div class="container">
     <h1>CONCURSO COFARMA</h1>
-    
     <div class="alert-panel">
-        ⚠️ IMPORTANTE: Los bonos individuales se activan solo si el cumplimiento global alcanza el 100%.
+        ⚠️ REGLA DE ORO: Vendedores cobran SOLO si la Compañía llega al 100%. Supervisor cobra desde el 90%.
     </div>
 
     <table>
@@ -65,25 +50,23 @@
         <h2 style="text-align:center; color:#3498db; font-size:1.1em; margin-bottom:15px; margin-top:0;">ESTADO GLOBAL - HAROLD MARIN (SUPERVISOR)</h2>
         <div class="global-grid">
             <div class="global-item">
-                <div class="global-label">Meta Global</div>
-                <div class="global-value">$ 52,200,000</div>
+                <div style="font-size:0.8em; color:#bdc3c7;">META GLOBAL</div>
+                <div style="font-size:1.2em; font-weight:700;">$ 52,200,000</div>
             </div>
             <div class="global-item">
-                <div class="global-label">Venta Total</div>
-                <div class="global-value" id="super-venta" style="color: #2ecc71;">$ 0</div>
+                <div style="font-size:0.8em; color:#bdc3c7;">VENTA TOTAL</div>
+                <div id="super-venta" style="font-size:1.2em; font-weight:700; color: #2ecc71;">$ 0</div>
             </div>
             <div class="global-item">
-                <div class="global-label">% Cumplimiento</div>
-                <div class="global-value" id="super-perc" style="color: #f1c40f;">0%</div>
+                <div style="font-size:0.8em; color:#bdc3c7;">% CUMPLIMIENTO</div>
+                <div id="super-perc" style="font-size:1.2em; font-weight:700; color: #f1c40f;">0%</div>
             </div>
             <div class="global-item">
-                <div class="global-label">Tu Bono</div>
-                <div class="global-value" id="super-bono" style="color: #2ecc71;">$ 0</div>
+                <div style="font-size:0.8em; color:#bdc3c7;">TU BONO</div>
+                <div id="super-bono" style="font-size:1.2em; font-weight:700; color: #2ecc71;">$ 0</div>
             </div>
         </div>
     </div>
-
-    <button class="btn-calc" onclick="calcularTodo()">Calcular Resultados</button>
 
     <footer>
         app desarrollada por vibras positivas derechos de autor (3117700431)
@@ -104,7 +87,7 @@
         { nombre: "ROBERT ATENCIA", ppto: 800000, cel: "3146072928" }
     ];
 
-    const META_GLOBAL_SUPERVISOR = 52200000;
+    const META_GLOBAL = 52200000;
 
     const escalaVendedores = [
         { min: 800000, max: 1499000, bono: 40000 },
@@ -124,73 +107,59 @@
             body.innerHTML += `
                 <tr>
                     <td>${v.nombre}</td>
-                    <td class="result-val">${fMone(v.ppto)}</td>
-                    <td><input type="number" class="venta-input" id="input-${i}" oninput="calcularTodo()" placeholder="0"></td>
+                    <td style="font-weight:bold;">${fMone(v.ppto)}</td>
+                    <td><input type="number" class="venta-input" id="in-${i}" oninput="calcularTodo()" placeholder="0"></td>
                     <td id="perc-${i}" class="perc-val">0%</td>
                     <td id="bono-${i}" class="bonus-val">$ 0</td>
-                    <td>
-                        <a href="#" id="ws-${i}" target="_blank" class="btn-whatsapp">
-                            <i class="fab fa-whatsapp"></i> Avisar
-                        </a>
-                    </td>
+                    <td><a href="#" id="ws-${i}" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Avisar</a></td>
                 </tr>`;
         });
     }
 
     function calcularTodo() {
-        let sumaVentasEquipo = 0;
+        let totalVenta = 0;
         const inputs = document.querySelectorAll('.venta-input');
+        inputs.forEach(input => totalVenta += parseFloat(input.value) || 0);
 
-        // Primero calculamos el total global para saber si se activa la regla del 90%
-        inputs.forEach((input) => {
-            sumaVentasEquipo += parseFloat(input.value) || 0;
-        });
+        const porcGlobal = (totalVenta / META_GLOBAL) * 100;
+        
+        // REGLA CRÍTICA: Empresa debe llegar al 100% para vendedores
+        const empresaCumpleVendedores = porcGlobal >= 100;
 
-        const porcGlobal = (sumaVentasEquipo / META_GLOBAL_SUPERVISOR) * 100;
-        const empresaCumple = porcGlobal >= 90;
-
-        // Actualizamos cada fila
         vendedoresData.forEach((v, i) => {
-            const venta = parseFloat(document.getElementById(`input-${i}`).value) || 0;
-            const porcIndiv = (venta / v.ppto) * 100;
-            const falta = v.ppto - venta > 0 ? v.ppto - venta : 0;
+            const ventaInd = parseFloat(document.getElementById(`in-${i}`).value) || 0;
+            const pInd = (ventaInd / v.ppto) * 100;
+            document.getElementById(`perc-${i}`).innerText = `${pInd.toFixed(1)}%`;
 
-            document.getElementById(`perc-${i}`).innerText = `${porcIndiv.toFixed(1)}%`;
-
-            // Lógica de bono condicionada a la empresa
             let bono = 0;
-            if (empresaCumple) {
-                const rango = escalaVendedores.find(r => venta >= r.min && venta <= r.max);
+            if (empresaCumpleVendedores) {
+                const rango = escalaVendedores.find(r => ventaInd >= r.min && ventaInd <= r.max);
                 bono = rango ? rango.bono : 0;
                 document.getElementById(`bono-${i}`).style.color = "#27ae60";
             } else {
-                document.getElementById(`bono-${i}`).style.color = "#e74c3c"; // Rojo si la empresa no cumple
+                document.getElementById(`bono-${i}`).style.color = "#e74c3c"; // Rojo si no cobran
             }
             document.getElementById(`bono-${i}`).innerText = fMone(bono);
 
-            // Actualizar enlace de WhatsApp
-            const msg = `Hola ${v.nombre}, te informo tu estado en el Concurso COFARMA: %0A%0A` +
-                        `✅ Venta Real: ${fMone(venta)}%0A` +
-                        `📊 Cumplimiento: ${porcIndiv.toFixed(1)}%%0A` +
-                        `🏁 Meta: ${fMone(v.ppto)}%0A` +
-                        `${falta > 0 ? '🚀 Te faltan ' + fMone(falta) + ' para el cumplimiento.' : '🎉 ¡Meta individual alcanzada!'}`;
-            
+            const msg = `Hola ${v.nombre}, estado COFARMA:%0A` +
+                        `✅ Tu Venta: ${fMone(ventaInd)} (${pInd.toFixed(1)}%%)%0A` +
+                        `🏢 Global Empresa: ${porcGlobal.toFixed(1)}%%0A` +
+                        `${!empresaCumpleVendedores ? '⚠️ Falta cumplimiento global para activar bonos.' : '💰 ¡Bono ACTIVADO!'}`;
             document.getElementById(`ws-${i}`).href = `https://wa.me/57${v.cel}?text=${msg}`;
         });
 
-        // Actualizar Panel Global
-        document.getElementById('super-venta').innerText = fMone(sumaVentasEquipo);
+        document.getElementById('super-venta').innerText = fMone(totalVenta);
         document.getElementById('super-perc').innerText = `${porcGlobal.toFixed(1)}%`;
         
-        let bonoSuper = 0;
-        if (porcGlobal >= 105) bonoSuper = 130000;
-        else if (porcGlobal >= 100) bonoSuper = 100000;
-        else if (porcGlobal >= 90) bonoSuper = 80000;
-        document.getElementById('super-bono').innerText = fMone(bonoSuper);
+        // Supervisor gana desde el 90%
+        let bonoH = 0;
+        if (porcGlobal >= 105) bonoH = 130000;
+        else if (porcGlobal >= 100) bonoH = 100000;
+        else if (porcGlobal >= 90) bonoH = 80000;
+        document.getElementById('super-bono').innerText = fMone(bonoH);
     }
 
     window.onload = cargarTabla;
 </script>
-
 </body>
 </html>
