@@ -51,7 +51,7 @@
         <div class="global-grid">
             <div class="global-item">
                 <div style="font-size:0.8em; color:#bdc3c7;">META GLOBAL</div>
-                <div style="font-size:1.2em; font-weight:700;">$ 52,200,000</div>
+                <div id="meta-dinamica" style="font-size:1.2em; font-weight:700;">$ 0</div>
             </div>
             <div class="global-item">
                 <div style="font-size:0.8em; color:#bdc3c7;">VENTA TOTAL</div>
@@ -88,7 +88,8 @@
         { nombre: "GLEIDYS ENAMORADO SILGADO", ppto: 800000, cel: "3135031118" }
     ];
 
-    const META_GLOBAL = 52200000;
+    // CALCULAMOS LA META GLOBAL AUTOMÁTICAMENTE
+    const META_GLOBAL = vendedoresData.reduce((total, v) => total + v.ppto, 0);
 
     const escalaVendedores = [
         { min: 800000, max: 1499000, bono: 40000 },
@@ -103,6 +104,9 @@
     function fMone(num) { return '$ ' + Math.round(num).toLocaleString(); }
 
     function cargarTabla() {
+        // Mostramos la meta sumada automáticamente en el panel
+        document.getElementById('meta-dinamica').innerText = fMone(META_GLOBAL);
+
         const body = document.getElementById('vendedores-body');
         vendedoresData.forEach((v, i) => {
             body.innerHTML += `
@@ -138,7 +142,7 @@
                 bono = rango ? rango.bono : 0;
                 document.getElementById(`bono-${i}`).style.color = "#27ae60";
             } else {
-                document.getElementById(`bono-${i}`).style.color = "#e74c3c"; // Rojo si no cobran
+                document.getElementById(`bono-${i}`).style.color = "#e74c3c";
             }
             document.getElementById(`bono-${i}`).innerText = fMone(bono);
 
@@ -152,7 +156,6 @@
         document.getElementById('super-venta').innerText = fMone(totalVenta);
         document.getElementById('super-perc').innerText = `${porcGlobal.toFixed(1)}%`;
         
-        // Supervisor gana desde el 90%
         let bonoH = 0;
         if (porcGlobal >= 105) bonoH = 130000;
         else if (porcGlobal >= 100) bonoH = 100000;
